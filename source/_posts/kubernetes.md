@@ -424,6 +424,7 @@ kubectl get --raw /apis/metrics.k8s.io/
 ```bash
 kubectl config
 kubectl cluster-info
+kubectl cluster-info dump
 kubectl get componentstatus
 ```
 
