@@ -9,7 +9,7 @@ permissions: read-all
 
 jobs:
   build:
-    name: GitOps Workflow
+    name: Build Image
     runs-on: ubuntu-latest
     steps:
       -
@@ -46,3 +46,31 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/quickref:app-${{ github.run_number }}
             ${{ secrets.DOCKERHUB_USERNAME }}/quickref:latest
+  modifymanifest:
+    name: Modify Manifest
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Changing the deployment of git repo
+        uses: actions/checkout@v3
+        with:
+          repository: 'ChauVinhAn/quickref_helmchart'
+          token: ${{ secrets.GIT_PASSWORD }}
+      -
+        name: Modify metadata
+        run: |
+          git config user.email chauvinhan@gmail.com
+          git config user.name ChauVinhAn
+          pwd
+          cat deployment.yaml
+          pwd
+          yq e '.metadata.name = "quickref-deployment-$RUN_NUMBER"' -i deployment.yaml
+          cat deployment.yaml
+          git add .
+          git commit -m 'Done  by Github Actions   Job changemanifest: ${{ github.run_number }}'
+          git push origin main
+        env:
+          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+          GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+          RUN_NUMBER: ${{ github.run_number }}
