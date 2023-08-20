@@ -132,7 +132,6 @@ kubectl logs [pod_name]
 kubectl logs --since=1h [pod_name]
 kubectl logs --tail=20 [pod_name]
 kubectl logs -f -c [container_name] [pod_name]
-kubectl logs [pod_name] > pod.log
 ```
 
 
