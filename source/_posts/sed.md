@@ -31,7 +31,7 @@ $ cat report.txt | sed 's/Nick/John/g'
 ```
 
 ```shell script
-$ echo '123abc' | sed 's/[0-9]+//g'
+$ echo '123abc' | sed -E 's/[0-9]+//g'
 ```
 
 ### Option Examples {.col-span-2}
